@@ -36,7 +36,8 @@ click-through investigation versus which could wait.
   on "possible" findings in this sample (expected heuristic noise, not a defect,
   but worth discounting by default) — **since fixed, see below** — and
   dependency-vulnerability scanning has no coverage at all for a project that
-  uses Poetry or Pipenv instead of a `requirements.txt` (still open).
+  uses Poetry or Pipenv instead of a `requirements.txt` — **since fixed, see
+  below**.
 - **Secrets false-positive fix, verified live.** The 0-for-27 noise above
   traced to two root causes: `detect-secrets --all-files` scanning into
   tool-cache and dependency directories (`.venv`, `.pytest_cache`,
@@ -50,6 +51,28 @@ click-through investigation versus which could wait.
   second live re-scan of the same class of real project: **25 → 15
   findings**, with the one deliberate real-secret test fixture in that
   project still caught correctly.
+- **Poetry/Pipenv dependency coverage, added and then independently
+  corrected.** `pip-audit` originally read only `requirements.txt`-family
+  files, so a project declaring dependencies via `pyproject.toml` (Poetry or
+  PEP 621) or a Pipenv `Pipfile`/`Pipfile.lock` got zero
+  dependency-vulnerability coverage — a real, silent blind spot, not
+  discovered as a hypothetical: it's the same class of file most modern
+  Python projects actually use. Fixed by extracting exactly-pinned
+  dependencies from whichever manifest is present and auditing them through
+  the same `pip-audit` invocation already used for `requirements.txt`; two
+  new fixtures confirmed real findings where the tool previously reported
+  `Unavailable`. A **separate, independent review session** — deliberately
+  run with no memory of how the fix was built, specifically to avoid
+  rubber-stamping the first session's own report — then found a real
+  follow-on defect the original fix missed: a PEP 508 extras marker (e.g.
+  `requests[security]==2.25.0`, a common real-world pattern) contained its
+  own bracket pair, which broke the array-parsing regex and silently
+  dropped every pin in that array, not just the one with extras. It failed
+  safe (degraded to `Unavailable`, never a false "audited, clean" claim),
+  but it was a real coverage loss for a very ordinary dependency shape.
+  Fixed with a small bracket-depth scanner in a follow-up commit, verified
+  through the same bounded pass/fail verification contract used elsewhere in
+  this package, independently of the original fix's own author.
 
 ## How it was verified
 
@@ -62,16 +85,23 @@ click-through investigation versus which could wait.
 - Detection-quality validation: every "strong" and "possible" finding used as
   evidence above was hand-checked against the actual flagged source line, not
   accepted from the tool's own confidence label.
-- Fresh re-run, 2026-09-08: `pytest -q -rs` → **98 passed, 1 skipped, in
-  156.00s, exit code 0** — the count grew from the original 95 because of 3
-  new regression tests added for the secrets false-positive fix above; the 1
-  skip is confirmed the same pre-existing, unrelated Docker-daemon-unavailable
-  skip, not caused by anything in this package.
+- Fresh re-run, 2026-09-08: `pytest -q -rs` → **105 passed, 1 skipped, in
+  177.86s, exit code 0** — the count grew from 95 (before either fix) to 98
+  (secrets false-positive fix) to 105 (Poetry/Pipenv coverage plus the
+  independent review's own follow-up correctness fix); the 1 skip is
+  confirmed the same pre-existing, unrelated Docker-daemon-unavailable skip
+  throughout.
 - The secrets false-positive fix was also checked against `evidence/verify_ui.py`
   (the separate GUI regression suite): 4 pre-existing failures (all citing
   Docker Desktop's engine not running) reproduce identically on the fix and on
   the unmodified prior commit via `git stash`, confirming the fix caused no
   new GUI regression.
+- The Poetry/Pipenv fix was independently re-verified end to end by a second,
+  separate session with no memory of the first: full diff read line by line
+  against the change's own claims, full suite re-run fresh, both new fixtures
+  re-run live (not by reading code) confirming real findings with correct
+  file paths and line numbers, and the existing `requirements.txt` path
+  re-confirmed byte-for-byte unchanged.
 
 ![Python Inspector's real Results screen after scanning the repo's own synthetic "vulnerable_project" test fixture — 21 findings across 4 confidence tiers, including a confirmed shell=True subprocess issue and a possible SQL-injection pattern.](screenshots/results-screen.png)
 
@@ -105,7 +135,10 @@ results table are in the project's own `docs/DETECTION_VALIDATION.md`.
 ## Evidence
 
 - Commits: the repaint fix; the detection-quality validation commit and its
-  6 evidence report files; the secrets false-positive fix (`bbbf504`)
+  6 evidence report files; the secrets false-positive fix (`bbbf504`); the
+  Poetry/Pipenv dependency-coverage fix (`cae1816`) and its independent
+  review's follow-up correctness fix (`b6e2ad8`)
 - Internal mission records: Docker/GUI verification; detection-quality
-  validation; secrets false-positive fix
+  validation; secrets false-positive fix; Poetry/Pipenv coverage fix and its
+  independent second-look review
 - `docs/DETECTION_VALIDATION.md` and the `evidence/` folder in the Python-Inspector repo

@@ -48,21 +48,23 @@ own configuration himself (Case Study 2).
 | Check | Result |
 |---|---|
 | `test-verify-repair.ps1` (verification controller's own adversarial suite) | 17 passed, 0 failed |
-| Python-Inspector `pytest -q -rs` | 98 passed, 1 skipped, exit code 0, 156.00s |
+| Python-Inspector `pytest -q -rs` | 105 passed, 1 skipped, exit code 0, 177.86s |
 
 The verification controller's suite matches its historical baseline exactly.
-Python-Inspector's suite count grew from 95 to 98 because of 3 new regression
-tests added the same day for the secrets false-positive fix (Case Study 3) —
-added coverage, not a regression; the 1 skip is the same pre-existing,
-unrelated Docker-daemon-unavailable skip throughout.
+Python-Inspector's suite count grew from 95 to 98 (secrets false-positive fix)
+to 105 (Poetry/Pipenv dependency coverage, plus a follow-up correctness fix
+found by an independent review of that same change) — all added coverage, no
+regressions; the 1 skip is the same pre-existing, unrelated
+Docker-daemon-unavailable skip throughout.
 
 ## Still open (Hunter's call, not decided here)
 
-- Whether to schedule the remaining Python-Inspector next-step candidate noted
-  in Case Study 3 (pip-audit lockfile support for Poetry/Pipenv projects) —
-  not scheduled, per this mission's boundary against silent scope expansion.
-  (The other candidate noted here, secrets false-positive tuning, was
-  completed 2026-09-08 — see Case Study 3.)
+Both Python-Inspector next-step candidates noted in Case Study 3 (secrets
+false-positive tuning, pip-audit lockfile support for Poetry/Pipenv projects)
+are now completed — see Case Study 3 for both fixes and, for the Poetry/Pipenv
+one, the independent second-look review that found and closed a real follow-on
+defect in the first fix. Nothing is currently queued as an open candidate for
+this package.
 
 ## File map
 
