@@ -43,21 +43,26 @@ case study rather than implied otherwise. The one directly hands-on-keyboard
 action found anywhere in this record is Hunter adding one permission line to his
 own configuration himself (Case Study 2).
 
-## Fresh verification runs for this package (2026-09-08, this session)
+## Fresh verification runs for this package (2026-09-08)
 
 | Check | Result |
 |---|---|
 | `test-verify-repair.ps1` (verification controller's own adversarial suite) | 17 passed, 0 failed |
-| Python-Inspector `pytest -q -rs` | 95 passed, 1 skipped, exit code 0, 153.23s |
+| Python-Inspector `pytest -q -rs` | 98 passed, 1 skipped, exit code 0, 156.00s |
 
-Both match their historical baselines exactly — nothing regressed since the
-underlying missions closed.
+The verification controller's suite matches its historical baseline exactly.
+Python-Inspector's suite count grew from 95 to 98 because of 3 new regression
+tests added the same day for the secrets false-positive fix (Case Study 3) —
+added coverage, not a regression; the 1 skip is the same pre-existing,
+unrelated Docker-daemon-unavailable skip throughout.
 
 ## Still open (Hunter's call, not decided here)
 
-- Whether to schedule either Python-Inspector next-step candidate noted in Case
-  Study 3 (secrets false-positive tuning, pip-audit lockfile support) — not
-  scheduled, per this mission's boundary against silent scope expansion.
+- Whether to schedule the remaining Python-Inspector next-step candidate noted
+  in Case Study 3 (pip-audit lockfile support for Poetry/Pipenv projects) —
+  not scheduled, per this mission's boundary against silent scope expansion.
+  (The other candidate noted here, secrets false-positive tuning, was
+  completed 2026-09-08 — see Case Study 3.)
 
 ## File map
 

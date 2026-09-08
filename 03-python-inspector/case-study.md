@@ -34,9 +34,22 @@ click-through investigation versus which could wait.
   project's pinned test dependency. It also surfaced two real product limits,
   documented rather than hidden: secrets detection had a 0-for-27 real-hit rate
   on "possible" findings in this sample (expected heuristic noise, not a defect,
-  but worth discounting by default), and dependency-vulnerability scanning has
-  no coverage at all for a project that uses Poetry or Pipenv instead of a
-  `requirements.txt`.
+  but worth discounting by default) — **since fixed, see below** — and
+  dependency-vulnerability scanning has no coverage at all for a project that
+  uses Poetry or Pipenv instead of a `requirements.txt` (still open).
+- **Secrets false-positive fix, verified live.** The 0-for-27 noise above
+  traced to two root causes: `detect-secrets --all-files` scanning into
+  tool-cache and dependency directories (`.venv`, `.pytest_cache`,
+  `.ruff_cache` — 76 of 83 findings when run against this repo's own tree),
+  and its `Base64 High Entropy String` plugin flagging non-secret,
+  JSON-encoded log payloads as possible secrets. Fixed both: tool-cache
+  directories are now excluded by default (reusing the project's existing
+  ignore-list, not a new mechanism), and a base64 hit is now checked against
+  whether it actually decodes to valid JSON before being flagged — narrow by
+  construction, so it does not risk hiding a real secret. Re-verified with a
+  second live re-scan of the same class of real project: **25 → 15
+  findings**, with the one deliberate real-secret test fixture in that
+  project still caught correctly.
 
 ## How it was verified
 
@@ -49,10 +62,16 @@ click-through investigation versus which could wait.
 - Detection-quality validation: every "strong" and "possible" finding used as
   evidence above was hand-checked against the actual flagged source line, not
   accepted from the tool's own confidence label.
-- Fresh re-run, 2026-09-08 (this session): `pytest -q -rs` → **95 passed, 1
-  skipped, in 153.23s, exit code 0** — matches the baseline already on record
-  exactly (the 1 skip is confirmed the same pre-existing, unrelated
-  Docker-daemon-unavailable skip, not caused by anything in this package).
+- Fresh re-run, 2026-09-08: `pytest -q -rs` → **98 passed, 1 skipped, in
+  156.00s, exit code 0** — the count grew from the original 95 because of 3
+  new regression tests added for the secrets false-positive fix above; the 1
+  skip is confirmed the same pre-existing, unrelated Docker-daemon-unavailable
+  skip, not caused by anything in this package.
+- The secrets false-positive fix was also checked against `evidence/verify_ui.py`
+  (the separate GUI regression suite): 4 pre-existing failures (all citing
+  Docker Desktop's engine not running) reproduce identically on the fix and on
+  the unmodified prior commit via `git stash`, confirming the fix caused no
+  new GUI regression.
 
 ![Python Inspector's real Results screen after scanning the repo's own synthetic "vulnerable_project" test fixture — 21 findings across 4 confidence tiers, including a confirmed shell=True subprocess issue and a possible SQL-injection pattern.](screenshots/results-screen.png)
 
@@ -86,6 +105,7 @@ results table are in the project's own `docs/DETECTION_VALIDATION.md`.
 ## Evidence
 
 - Commits: the repaint fix; the detection-quality validation commit and its
-  6 evidence report files
-- Internal mission records: Docker/GUI verification; detection-quality validation
+  6 evidence report files; the secrets false-positive fix (`bbbf504`)
+- Internal mission records: Docker/GUI verification; detection-quality
+  validation; secrets false-positive fix
 - `docs/DETECTION_VALIDATION.md` and the `evidence/` folder in the Python-Inspector repo
