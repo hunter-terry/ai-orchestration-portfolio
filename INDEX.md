@@ -1,8 +1,7 @@
 # Job Portfolio — Local Package (prepared 2026-09-08)
 
-**Status: prepared locally for Hunter's own review. Not published, not
-production-ready, not to be shared externally without a separate, explicit
-go-ahead.**
+**Status: published publicly on GitHub on 2026-09-08, at Hunter's explicit
+direction, after local review. See [PUBLICATION-STATUS.md](PUBLICATION-STATUS.md).**
 
 ## What this is
 
@@ -59,15 +58,14 @@ underlying missions closed.
 - Whether to schedule either Python-Inspector next-step candidate noted in Case
   Study 3 (secrets false-positive tuning, pip-audit lockfile support) — not
   scheduled, per this mission's boundary against silent scope expansion.
-- Publication: when and how any of this leaves this folder. Not decided or
-  actioned here.
 
 ## File map
 
 ```
 Job-Portfolio-Local/
+├── README.md                       (GitHub landing page — same content as this file)
 ├── INDEX.md                        (this file)
-├── NOT-FOR-PUBLICATION.md
+├── PUBLICATION-STATUS.md
 ├── interview-notes.md
 ├── 01-verification-system/case-study.md
 ├── 02-fleet-supervision/case-study.md
