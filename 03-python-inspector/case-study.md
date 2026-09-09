@@ -1,4 +1,7 @@
 # Case Study 3: Python-Inspector — Built, Hardened, and Validated Software
+**Roles:** Hunter directed scope, acceptance criteria, and approval decisions. Implementation and technical checks were performed through Claude Code and the agent/tool workflow described below; they are not attributed to Hunter as personally executed commands or code review.
+
+**Evidence:** This account summarizes recorded project work. The underlying code and raw execution records are not included in this public repository. Results below were not rerun for the September 9, 2026 documentation update.
 
 ## Problem
 
@@ -19,12 +22,12 @@ click-through investigation versus which could wait.
 
 ## What was found and fixed
 
-- **The sandbox holds under real load.** The hardened container
+- **Container execution and cancellation passed the recorded checks.** The hardened container
   (`--cap-drop ALL`, `--read-only`, a size-capped tmpfs) ran a real third-party
   project's full test suite clean (185 tests passed) and Python-Inspector's own
   suite; a real hung process inside the container was killed in about 2 seconds
   on cancellation, with no orphaned container left behind afterward.
-- **Two real, live-reproduced GUI bugs, fixed and re-verified.** A repaint bug
+- **A reproduced GUI repaint bug fixed, and save-error handling verified.** A repaint bug
   where the results screen's header rendered blank after a minimize/restore
   cycle (fixed with a targeted redraw trigger); and confirmation that a real
   save-permission failure — triggered through an actual file lock from another
@@ -34,7 +37,7 @@ click-through investigation versus which could wait.
   project's pinned test dependency. It also surfaced two real product limits,
   documented rather than hidden: secrets detection had a 0-for-27 real-hit rate
   on "possible" findings in this sample (expected heuristic noise, not a defect,
-  but worth discounting by default) — **since fixed, see below** — and
+  but worth discounting by default) — **follow-up changes described below** — and
   dependency-vulnerability scanning has no coverage at all for a project that
   uses Poetry or Pipenv instead of a `requirements.txt` — **since fixed, see
   below**.
@@ -46,8 +49,7 @@ click-through investigation versus which could wait.
   JSON-encoded log payloads as possible secrets. Fixed both: tool-cache
   directories are now excluded by default (reusing the project's existing
   ignore-list, not a new mechanism), and a base64 hit is now checked against
-  whether it actually decodes to valid JSON before being flagged — narrow by
-  construction, so it does not risk hiding a real secret. Re-verified with a
+  whether it actually decodes to valid JSON before being flagged — a filter whose broader effect on missed secrets has not been established by the recorded sample. Re-verified with a
   second live re-scan of the same class of real project: **25 → 15
   findings**, with the one deliberate real-secret test fixture in that
   project still caught correctly.
@@ -94,8 +96,7 @@ click-through investigation versus which could wait.
 - The secrets false-positive fix was also checked against `evidence/verify_ui.py`
   (the separate GUI regression suite): 4 pre-existing failures (all citing
   Docker Desktop's engine not running) reproduce identically on the fix and on
-  the unmodified prior commit via `git stash`, confirming the fix caused no
-  new GUI regression.
+  the unmodified prior commit via `git stash`, showing the same four failures on both revisions, while leaving those GUI paths unverified in that environment.
 - The Poetry/Pipenv fix was independently re-verified end to end by a second,
   separate session with no memory of the first: full diff read line by line
   against the change's own claims, full suite re-run fresh, both new fixtures
@@ -125,14 +126,14 @@ statistical claim about the tool's overall accuracy. The project has no GitHub
 remote yet — a deliberate choice to stay local until it's ready for public
 posting, not an oversight.
 
-## Reproduction
+## Verification method (requires the underlying local project)
 
 From the project root, with its virtual environment active:
 `pytest -q -rs` runs the full suite. The three real-world validation targets are
 external projects not included in this package; the method and per-project
 results table are in the project's own `docs/DETECTION_VALIDATION.md`.
 
-## Evidence
+## Evidence references (local or private unless linked)
 
 - Commits: the repaint fix; the detection-quality validation commit and its
   6 evidence report files; the secrets false-positive fix (`bbbf504`); the

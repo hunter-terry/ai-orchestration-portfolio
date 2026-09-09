@@ -1,4 +1,7 @@
 # Case Study 1: The Verification System — Keeping AI-Executed Work Honest
+**Roles:** Hunter directed scope, acceptance criteria, and approval decisions. Implementation and technical checks were performed through Claude Code and the agent/tool workflow described below; they are not attributed to Hunter as personally executed commands or code review.
+
+**Evidence:** This account summarizes recorded project work. The underlying code and raw execution records are not included in this public repository. Results below were not rerun for the September 9, 2026 documentation update.
 
 ## Problem
 
@@ -54,8 +57,7 @@ surfaced and corrected this before it caused real bookkeeping drift.
 
 ## How it was verified
 
-Ran the controller's own adversarial self-test suite fresh, 2026-09-08 (this
-session): **17 passed, 0 failed**. It exercises real adversarial scenarios, not
+The recorded controller adversarial self-test run on 2026-09-08 returned: **17 passed, 0 failed**. It exercises real adversarial scenarios, not
 just happy-path checks:
 
 - known-good candidate passes; known-bad candidate fails; a repaired candidate
@@ -95,13 +97,12 @@ machine — a same-user trust boundary, explicitly never called "tamper-proof."
 The mission-tracking self-check is bookkeeping discipline, not a technical
 control.
 
-## Reproduction
+## Verification method (requires the underlying local project)
 
 From the maintenance-skills repo root: `powershell -File scripts\test-verify-repair.ps1`
-runs the full adversarial suite against disposable `%TEMP%` fixtures — safe to
-run anywhere, touches no live repository.
+runs the full adversarial suite against disposable `%TEMP%` fixtures — recorded as using disposable fixtures without touching a live repository.
 
-## Evidence
+## Evidence references (local or private unless linked)
 
 - `scripts/verify-repair.ps1`, `scripts/test-verify-repair.ps1` (maintenance-skills repo)
 - `references/verify-repair-controller.md`, `references/fleet-job-sheet.md`,

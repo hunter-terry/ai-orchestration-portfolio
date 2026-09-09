@@ -1,4 +1,7 @@
 # Case Study 4: Evidence-Durability Repair — Found, Fixed, Hash-Verified
+**Roles:** Hunter directed scope, acceptance criteria, and approval decisions. Implementation and technical checks were performed through Claude Code and the agent/tool workflow described below; they are not attributed to Hunter as personally executed commands or code review.
+
+**Evidence:** This account summarizes recorded project work. The underlying code and raw execution records are not included in this public repository. Results below were not rerun for the September 9, 2026 documentation update.
 
 ## Problem
 
@@ -42,13 +45,13 @@ This closes the specific failure mode found (evidence loss on reinstall). It doe
 not change the same-user trust boundary already disclosed in Case Study 1 — this
 is a durability fix, not a new security boundary.
 
-## Reproduction
+## Verification method (requires the underlying local project)
 
 The evidence index file at the controller's canonical evidence root lists every
 completed mission and its verdict — including two entries written before and
 after this fix's own verification reinstall, still present and unchanged.
 
-## Evidence
+## Evidence references (local or private unless linked)
 
 - Internal mission record: evidence-durability repair result
 - Two commits in the maintenance-skills repo (evidence-root relocation)

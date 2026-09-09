@@ -1,10 +1,5 @@
 # Publication status
 
-This repository was published publicly on GitHub on 2026-09-08, at Hunter's
-explicit direction, after reviewing the locally prepared package. Before
-confirming, he was told plainly what "public" means: visible to anyone on the
-internet, indexed and crawled, and effectively permanent even if the repo is
-later made private again (forks, caches, and scrapers may already have it).
+First published September 8, 2026. Updated September 9, 2026 with an employer-facing overview and clarified attribution.
 
-This was a deliberate, informed decision — not a default, and not something
-this package assumed for itself while it was being assembled.
+This repository contains public case-study narratives and screenshots. Underlying implementation repositories and raw mission evidence are not included. Recorded test results retain their original dates; this documentation update does not constitute a new software verification run.

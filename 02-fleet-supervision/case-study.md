@@ -1,4 +1,7 @@
 # Case Study 2: AI-Worker Fleet Supervision — The Standard in Action
+**Roles:** Hunter directed scope, acceptance criteria, and approval decisions. Implementation and technical checks were performed through Claude Code and the agent/tool workflow described below; they are not attributed to Hunter as personally executed commands or code review.
+
+**Evidence:** This account summarizes recorded project work. The underlying code and raw execution records are not included in this public repository. Results below were not rerun for the September 9, 2026 documentation update.
 
 ## Problem
 
@@ -59,16 +62,16 @@ transient-lock failures before asserting recovery.
 The true original root cause — what specifically held the file lock in
 production — is still not definitively confirmed. The retry-with-backoff fix is
 well-reasoned and independently verified to work against the *class* of fault
-described; call it mitigated, not proven to be the exact historical cause.
+described; the outcome is a mitigation, with the exact historical cause unconfirmed.
 
-## Reproduction
+## Verification method (requires the underlying local project)
 
 Both dispatches followed the fleet job-sheet hand-off in Case Study 1: a filled-out
 scope statement, a pre-flight gate the agent's own output had to clear first, then
 an independent re-run of the project's real test suite outside either agent's own
 environment before anything was accepted.
 
-## Evidence
+## Evidence references (local or private unless linked)
 
 - Internal mission records: fleet trial result; follow-up closing its own gap
 - Python-Inspector commits: the accepted OpenCode fix, the Codex documentation

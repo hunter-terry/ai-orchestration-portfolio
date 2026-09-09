@@ -1,81 +1,50 @@
-# Job Portfolio — Local Package (prepared 2026-09-08)
+# Hunter Terry — AI Orchestration & Verification
 
-**Status: published publicly on GitHub on 2026-09-08, at Hunter's explicit
-direction, after local review. See [PUBLICATION-STATUS.md](PUBLICATION-STATUS.md).**
+I direct AI coding agents to build software and require evidence before accepting their work. My focus is defining clear tasks, setting permission boundaries, and making sure reported success matches what was actually checked.
 
-## What this is
+**Seeking remote AI implementation, automation, or agent operations opportunities.**  
+[GitHub profile](https://github.com/hunter-terry) · [Contact](mailto:hunterterry234@gmail.com)
 
-Four verified case studies drawn from real Claude Code Work Inbox missions on
-this machine, prepared for Hunter to review and explain in his own words to an
-AI-related employer. Nothing here is invented: every claim traces to a specific
-commit, command, test result, or internal mission record, listed as evidence at
-the end of each case study.
+## Selected work
 
-## How to read this
+These four case studies document software development and reliability work in my own environment.
 
-Start with whichever case study matches the conversation you're having. None of
-the four is "the lead" — they're evenly weighted and can be read in any order.
+| Project | Problem addressed | Documented result |
+|---|---|---|
+| [Verification system](01-verification-system/case-study.md) | Agents can claim success without valid checks. | A deterministic controller checks submissions against a frozen contract; 17 adversarial tests passed in the recorded run. |
+| [AI-worker supervision](02-fleet-supervision/case-study.md) | Delegated agents can change unrelated files or report environment-specific failures. | Review caught an unauthorized test rewrite; separate execution distinguished sandbox failures from project failures. |
+| [Python-Inspector](03-python-inspector/case-study.md) | Code scanning needs useful findings and controlled test execution. | Desktop inspection tool combining five checks and Docker test execution; latest recorded suite: 105 passed, 1 skipped. |
+| [Evidence-durability repair](04-evidence-durability/case-study.md) | Routine reinstalls removed verification records. | Evidence storage was relocated and checked with per-file hashes across a real reinstall. |
 
-- **[01 — The verification system](01-verification-system/case-study.md)**: the
-  actual governance/verification machinery — how AI-executed work is kept
-  honest before it's ever called "done."
-- **[02 — AI-worker fleet supervision](02-fleet-supervision/case-study.md)**:
-  that system in action, catching two real problems from two different coding
-  agents.
-- **[03 — Python-Inspector](03-python-inspector/case-study.md)**: a real piece
-  of software — built, security-hardened, and validated against real projects.
-- **[04 — Evidence-durability repair](04-evidence-durability/case-study.md)**: a
-  real bug found in the verification system's own infrastructure, fixed, and
-  hash-verified.
+## My contribution
 
-[interview-notes.md](interview-notes.md) has a short, plain-language version of
-each, meant to practice from out loud.
+I define the goals and acceptance criteria, choose the tasks and tools, make permission and scope decisions, and review reported outcomes before accepting work.
 
-## How Hunter's role is described throughout
+Claude Code and delegated OpenCode/Codex agents performed implementation and technical checking. The case studies distinguish my direction from agent execution. Separate review sessions and deterministic checks are part of the workflow; they are not claims of an external audit or of code I personally wrote.
 
-As **AI orchestration and verification**: directing what gets built or checked,
-making the judgment calls and the one real permission decision on record,
-reviewing AI-executed output before accepting it, and deciding what counts as
-actually fixed versus merely claimed. The code and configuration changes
-themselves were drafted and executed by Claude Code and, in two cases, by
-OpenCode/Codex under Claude Code's supervision — that is stated plainly in each
-case study rather than implied otherwise. The one directly hands-on-keyboard
-action found anywhere in this record is Hunter adding one permission line to his
-own configuration himself (Case Study 2).
+## Project previews
 
-## Fresh verification runs for this package (2026-09-08)
+**Verification controller** — a disposable demonstration of a frozen contract and a checked result.
 
-| Check | Result |
-|---|---|
-| `test-verify-repair.ps1` (verification controller's own adversarial suite) | 17 passed, 0 failed |
-| Python-Inspector `pytest -q -rs` | 105 passed, 1 skipped, exit code 0, 177.86s |
+![Verification controller console demonstration](01-verification-system/screenshots/verify-repair-console.png)
 
-The verification controller's suite matches its historical baseline exactly.
-Python-Inspector's suite count grew from 95 to 98 (secrets false-positive fix)
-to 105 (Poetry/Pipenv dependency coverage, plus a follow-up correctness fix
-found by an independent review of that same change) — all added coverage, no
-regressions; the 1 skip is the same pre-existing, unrelated
-Docker-daemon-unavailable skip throughout.
+**Python-Inspector** — results from a synthetic fixture containing deliberately planted issues.
 
-## Still open (Hunter's call, not decided here)
+![Python-Inspector results screen](03-python-inspector/screenshots/results-screen.png)
 
-Both Python-Inspector next-step candidates noted in Case Study 3 (secrets
-false-positive tuning, pip-audit lockfile support for Poetry/Pipenv projects)
-are now completed — see Case Study 3 for both fixes and, for the Poetry/Pipenv
-one, the independent second-look review that found and closed a real follow-on
-defect in the first fix. Nothing is currently queued as an open candidate for
-this package.
+## Validation and evidence
 
-## File map
+Recorded on **September 8, 2026**:
 
-```
-Job-Portfolio-Local/
-├── README.md                       (GitHub landing page — same content as this file)
-├── INDEX.md                        (this file)
-├── PUBLICATION-STATUS.md
-├── interview-notes.md
-├── 01-verification-system/case-study.md
-├── 02-fleet-supervision/case-study.md
-├── 03-python-inspector/case-study.md
-└── 04-evidence-durability/case-study.md
-```
+| Check | Recorded outcome | Qualification |
+|---|---|---|
+| Controller adversarial suite | 17 passed, 0 failed | Disposable test fixtures; not proof against an attacker with the same account permissions. |
+| Python-Inspector `pytest -q -rs` | 105 passed, 1 skipped; exit 0 | One Docker-daemon-unavailable skip. Separate GUI checks also had four recorded environment-related failures. |
+
+This repository publishes case studies and screenshots. Implementation repositories, raw transcripts, and detailed execution records remain local or private; their paths and commit identifiers are provenance references, not publicly reproducible evidence. Test results are historical records and were not rerun for this documentation update.
+
+Each case study includes the problem, my role, the implementation, verification results, and limitations.
+
+## Tools used
+
+Claude Code · OpenCode with OpenRouter models · Codex · Python · PowerShell · Docker · Git
