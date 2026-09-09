@@ -3,7 +3,7 @@
 
 **Source:** [github.com/hunter-terry/python-inspector](https://github.com/hunter-terry/python-inspector) — full code, commit history, and `docs/DETECTION_VALIDATION.md`.
 
-**Evidence:** This account summarizes recorded project work. Raw findings and file paths from the three private local projects used for detection-quality validation (see below) are kept private, not published — only the aggregate results are cited here and in the linked repo's docs. The pre-September-9 results below (container execution, repaint fix, detection-quality validation, the two earlier fixes) were not rerun for this update; the suite counts in "How it was verified" were re-run fresh on September 9, 2026 and reflect two additional app bugs found and fixed that day (see the linked repo's `docs/DETECTION_VALIDATION.md` for detail).
+**Evidence:** This account summarizes recorded project work. Raw findings and file paths from the three private local projects used for detection-quality validation (see below) are kept private, not published — only the aggregate results are cited here and in the linked repo's docs. The pre-September-9 results below (container execution, repaint fix, detection-quality validation, the two earlier fixes) were not rerun for this update; the suite counts in "How it was verified" were re-run fresh on September 9, 2026 and reflect one app bug and one flaky test found and fixed that day (see the linked repo's `docs/DETECTION_VALIDATION.md` for detail).
 
 ## Problem
 
@@ -103,13 +103,13 @@ click-through investigation versus which could wait.
   238.33s**. The 1 skip and the 1 failure are the same root cause reported by
   two different tests — Docker Desktop's daemon could not be started in this
   environment during this pass — not a code regression; no other failures were
-  observed. This replaces an earlier, now-superseded claim that the GUI suite
-  had 4 pre-existing Docker-related failures: a genuine re-verification pass on
-  2026-09-09 found and fixed 2 of those (see below) as real, non-Docker-related
-  bugs the earlier characterization had missed, leaving exactly 1 real
-  environment-only gap (Docker) once they were corrected.
-- **Two real app bugs found and fixed during that same re-verification pass**
-  (by Claude Code, independent of any AI-fleet dispatch): (1) `approve_and_run()`
+  observed. This supersedes an earlier claim that the GUI suite had multiple
+  Docker-related failures: re-verification on 2026-09-09 found that claim was
+  wrong about the cause for at least two of them (see below), which were a real
+  app bug and a flaky test, not Docker.
+- **One real app bug and one flaky test, both found and fixed during that same
+  re-verification pass** (by Claude Code, independent of any AI-fleet
+  dispatch): (1) `approve_and_run()`
   always calls the backend with an `is_cancelled` argument that the documented
   interface and the demo `MockBackend` didn't accept — every real "Approve and
   run" click against the shipped demo app raised a `TypeError`, which had been

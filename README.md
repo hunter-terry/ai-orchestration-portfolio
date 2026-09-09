@@ -52,7 +52,7 @@ two dates:
 |---|---|---|
 | Controller adversarial suite | 17 passed, 0 failed | Disposable test fixtures; not proof against an attacker with the same account permissions. |
 | Python-Inspector `pytest -q` | 107 passed, 1 skipped; exit 0 | One Docker-daemon-unavailable skip. |
-| Python-Inspector combined suite (`pytest tests evidence\verify_ui.py -q -rs`) | 120 passed, 1 skipped, 1 failed | The skip and the failure share one root cause: Docker Desktop's daemon could not be started in this environment. An earlier snapshot of this table reported four GUI-suite failures; re-verification on 2026-09-09 found two were real app bugs (since fixed) and one was a flaky test (since fixed), leaving this one genuine environment gap. |
+| Python-Inspector combined suite (`pytest tests evidence\verify_ui.py -q -rs`) | 120 passed, 1 skipped, 1 failed | The skip and the failure share one root cause: Docker Desktop's daemon could not be started in this environment. An earlier snapshot of this table reported four GUI-suite failures; re-verification on 2026-09-09 found and fixed one real app bug (`approve_and_run()`, which had been failing 2 test parametrizations, not 2 separate bugs) and one flaky test, leaving this one genuine environment gap. |
 
 This repository publishes case studies and screenshots. Implementation
 repositories, raw transcripts, and detailed execution records for the
