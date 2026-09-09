@@ -13,7 +13,7 @@ These four case studies document software development and reliability work in my
 |---|---|---|
 | [Verification system](01-verification-system/case-study.md) | Agents can claim success without valid checks. | A deterministic controller checks submissions against a frozen contract; 17 adversarial tests passed in the recorded run. |
 | [AI-worker supervision](02-fleet-supervision/case-study.md) | Delegated agents can change unrelated files or report environment-specific failures. | Review caught an unauthorized test rewrite; separate execution distinguished sandbox failures from project failures. |
-| [Python-Inspector](03-python-inspector/case-study.md) | Code scanning needs useful findings and controlled test execution. | Desktop inspection tool combining five checks and Docker test execution; latest recorded suite: 105 passed, 1 skipped. |
+| [Python-Inspector](03-python-inspector/case-study.md) — [public source](https://github.com/hunter-terry/python-inspector) | Code scanning needs useful findings and controlled test execution. | Desktop inspection tool combining five checks and Docker test execution; latest recorded suite (2026-09-09, commit `f36a4af`): 107 passed, 1 skipped; combined suite (adds the separate GUI regression file): 120 passed, 1 skipped, 1 failed (Docker unavailable in that environment). |
 | [Evidence-durability repair](04-evidence-durability/case-study.md) | Routine reinstalls removed verification records. | Evidence storage was relocated and checked with per-file hashes across a real reinstall. |
 
 ## Additional work
@@ -43,14 +43,27 @@ Claude Code and delegated OpenCode/Codex agents performed implementation and tec
 
 ## Validation and evidence
 
-Recorded on **September 8, 2026**:
+Controller suite recorded on **September 8, 2026**; Python-Inspector suite
+re-verified fresh on **September 9, 2026** (commit `f36a4af`) — see
+[Case Study 3](03-python-inspector/case-study.md) for what changed between the
+two dates:
 
 | Check | Recorded outcome | Qualification |
 |---|---|---|
 | Controller adversarial suite | 17 passed, 0 failed | Disposable test fixtures; not proof against an attacker with the same account permissions. |
-| Python-Inspector `pytest -q -rs` | 105 passed, 1 skipped; exit 0 | One Docker-daemon-unavailable skip. Separate GUI checks also had four recorded environment-related failures. |
+| Python-Inspector `pytest -q` | 107 passed, 1 skipped; exit 0 | One Docker-daemon-unavailable skip. |
+| Python-Inspector combined suite (`pytest tests evidence\verify_ui.py -q -rs`) | 120 passed, 1 skipped, 1 failed | The skip and the failure share one root cause: Docker Desktop's daemon could not be started in this environment. An earlier snapshot of this table reported four GUI-suite failures; re-verification on 2026-09-09 found two were real app bugs (since fixed) and one was a flaky test (since fixed), leaving this one genuine environment gap. |
 
-This repository publishes case studies and screenshots. Implementation repositories, raw transcripts, and detailed execution records remain local or private; their paths and commit identifiers are provenance references, not publicly reproducible evidence. Test results are historical records and were not rerun for this documentation update.
+This repository publishes case studies and screenshots. Implementation
+repositories, raw transcripts, and detailed execution records for the
+Verification system, AI-worker supervision, and Evidence-durability repair
+case studies remain local or private; their paths and commit identifiers are
+provenance references, not publicly reproducible evidence.
+**Python-Inspector is the exception: its full source, commit history, and
+test suite are public** at
+[github.com/hunter-terry/python-inspector](https://github.com/hunter-terry/python-inspector).
+Test results are historical records; each one states the date and commit it
+was measured against rather than being assumed current.
 
 Each case study includes the problem, my role, the implementation, verification results, and limitations.
 

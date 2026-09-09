@@ -3,7 +3,7 @@
 
 **Source:** [github.com/hunter-terry/python-inspector](https://github.com/hunter-terry/python-inspector) — full code, commit history, and `docs/DETECTION_VALIDATION.md`.
 
-**Evidence:** This account summarizes recorded project work. Raw findings and file paths from the three private local projects used for detection-quality validation (see below) are kept private, not published — only the aggregate results are cited here and in the linked repo's docs. Results below were not rerun for the September 9, 2026 documentation update.
+**Evidence:** This account summarizes recorded project work. Raw findings and file paths from the three private local projects used for detection-quality validation (see below) are kept private, not published — only the aggregate results are cited here and in the linked repo's docs. The pre-September-9 results below (container execution, repaint fix, detection-quality validation, the two earlier fixes) were not rerun for this update; the suite counts in "How it was verified" were re-run fresh on September 9, 2026 and reflect two additional app bugs found and fixed that day (see the linked repo's `docs/DETECTION_VALIDATION.md` for detail).
 
 ## Problem
 
@@ -89,16 +89,39 @@ click-through investigation versus which could wait.
 - Detection-quality validation: every "strong" and "possible" finding used as
   evidence above was hand-checked against the actual flagged source line, not
   accepted from the tool's own confidence label.
-- Fresh re-run, 2026-09-08: `pytest -q -rs` → **105 passed, 1 skipped, in
-  177.86s, exit code 0** — the count grew from 95 (before either fix) to 98
-  (secrets false-positive fix) to 105 (Poetry/Pipenv coverage plus the
-  independent review's own follow-up correctness fix); the 1 skip is
-  confirmed the same pre-existing, unrelated Docker-daemon-unavailable skip
-  throughout.
-- The secrets false-positive fix was also checked against `evidence/verify_ui.py`
-  (the separate GUI regression suite): 4 pre-existing failures (all citing
-  Docker Desktop's engine not running) reproduce identically on the fix and on
-  the unmodified prior commit via `git stash`, showing the same four failures on both revisions, while leaving those GUI paths unverified in that environment.
+- Fresh re-run, 2026-09-09, commit `f36a4af`: `pytest -q` → **107 passed, 1
+  skipped, in 174.16s, exit code 0** — the count grew from 95 (before any fix)
+  through 98 (secrets false-positive fix), 105 (Poetry/Pipenv coverage plus the
+  independent review's own follow-up correctness fix), 106 (secrets-dedup fix,
+  drafted by OpenCode and independently verified by Claude Code), to 107 (one
+  more regression test added for a real interface bug found the same day, see
+  below); the 1 skip is confirmed the same pre-existing, unrelated
+  Docker-daemon-unavailable skip throughout.
+- Same commit, the combined suite (`pytest tests evidence\verify_ui.py -q -rs`,
+  which adds `evidence/verify_ui.py` — the GUI regression file `pyproject.toml`
+  excludes from the bare command above): **120 passed, 1 skipped, 1 failed, in
+  238.33s**. The 1 skip and the 1 failure are the same root cause reported by
+  two different tests — Docker Desktop's daemon could not be started in this
+  environment during this pass — not a code regression; no other failures were
+  observed. This replaces an earlier, now-superseded claim that the GUI suite
+  had 4 pre-existing Docker-related failures: a genuine re-verification pass on
+  2026-09-09 found and fixed 2 of those (see below) as real, non-Docker-related
+  bugs the earlier characterization had missed, leaving exactly 1 real
+  environment-only gap (Docker) once they were corrected.
+- **Two real app bugs found and fixed during that same re-verification pass**
+  (by Claude Code, independent of any AI-fleet dispatch): (1) `approve_and_run()`
+  always calls the backend with an `is_cancelled` argument that the documented
+  interface and the demo `MockBackend` didn't accept — every real "Approve and
+  run" click against the shipped demo app raised a `TypeError`, which had been
+  masquerading as GUI-test flakiness; fixed by extending the interface and
+  `MockBackend` to match `RealBackend`'s existing, already-correct signature,
+  with a dedicated regression test proven to fail pre-fix and pass post-fix.
+  (2) A GUI regression test for a minimize/restore repaint nudge polled too
+  coarsely (~20ms) to reliably observe a ~1ms state change, roughly a 1-in-4
+  real failure rate with no underlying app defect; fixed by tracing the actual
+  repaint call instead of racing a polling loop, 10/10 clean runs after. Full
+  detail, commits, and exact commands: the linked repo's
+  `docs/DETECTION_VALIDATION.md`, "Update 2026-09-09."
 - The Poetry/Pipenv fix was independently re-verified end to end by a second,
   separate session with no memory of the first: full diff read line by line
   against the change's own claims, full suite re-run fresh, both new fixtures
@@ -140,7 +163,9 @@ and aggregate per-run results are in the public repo's own
 - Commits: the repaint fix; the detection-quality validation pass; the
   [secrets false-positive fix](https://github.com/hunter-terry/python-inspector/commit/6a7b0c1);
   the [Poetry/Pipenv dependency-coverage fix](https://github.com/hunter-terry/python-inspector/commit/2f21eeb)
-  and its [independent review's follow-up correctness fix](https://github.com/hunter-terry/python-inspector/commit/3dc4985)
+  and its [independent review's follow-up correctness fix](https://github.com/hunter-terry/python-inspector/commit/3dc4985);
+  the [secrets-dedup fix](https://github.com/hunter-terry/python-inspector/commit/4079e05);
+  the [approve_and_run() interface fix and repaint-test deflake](https://github.com/hunter-terry/python-inspector/commit/f36a4af)
 - Internal mission records (private): Docker/GUI verification; detection-quality
   validation; secrets false-positive fix; Poetry/Pipenv coverage fix and its
   independent second-look review

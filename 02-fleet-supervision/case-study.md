@@ -1,7 +1,7 @@
 # Case Study 2: AI-Worker Fleet Supervision — The Standard in Action
 **Roles:** Hunter directed scope, acceptance criteria, and approval decisions. Implementation and technical checks were performed through Claude Code and the agent/tool workflow described below; they are not attributed to Hunter as personally executed commands or code review.
 
-**Evidence:** This account summarizes recorded project work. The underlying code and raw execution records are not included in this public repository. Results below were not rerun for the September 9, 2026 documentation update.
+**Evidence:** This account summarizes recorded project work. The underlying code and raw execution records are not included in this public repository. The original dispatch narrative below was not rerun for the September 9, 2026 documentation update; the correction to the Codex verdict further down *is* the result of a genuine re-verification pass done that day.
 
 ## Problem
 
@@ -56,6 +56,42 @@ transient-lock failures before asserting recovery.
 - The follow-up's new test was checked by first reproducing the *original* bug
   mechanism directly, with a disposable script, before writing anything — then
   confirming the new test actually fails without the fix and passes with it.
+
+## Update 2026-09-09 — correction to the Codex verdict above
+
+The "succeeded on the first attempt" verdict recorded above for Codex's
+dispatch did not hold up under later re-verification, and is corrected here
+rather than quietly edited away.
+
+**What was actually wrong:** the verification controller itself (the
+deterministic checker from Case Study 1) had a real defect — it read *any*
+bare-external-command check as passed regardless of that command's real exit
+code, for every check shaped like `pytest -q`. That defect was live during
+this dispatch. Codex's task was to document a combined test command
+(`pytest tests evidence\verify_ui.py -q`) for Python-Inspector; the controller
+reported that command as passing, but — because of its own defect — never
+actually proved it.
+
+**Re-verified for real, independent of the controller, on 2026-09-09:** the
+combined command did *not* actually pass at the time. It exercised a real,
+separate, pre-existing bug in Python-Inspector's own `approve_and_run()` (an
+interface mismatch that made a real "Approve and run" click crash against the
+app's demo backend) — a bug with nothing to do with Codex's own task or output,
+already present before this dispatch, and unrelated to the controller defect
+that hid it. That app bug has since been found and fixed — see
+[Case Study 3](../03-python-inspector/case-study.md) and the Python-Inspector
+repo's own `docs/DETECTION_VALIDATION.md`, "Update 2026-09-09" — and the
+controller's own exit-code defect was fixed the same day it was found.
+
+**What this does and doesn't change:** Codex's own work in this dispatch —
+documenting the combined command — was correct and is not in question; the
+combined command it documented simply didn't pass yet, for reasons entirely
+outside Codex's task. The lesson is about the *controller*, not about Codex:
+a verification tool that can't fail is not verification, and this dispatch's
+"succeeded" verdict is the concrete example of exactly that risk landing for
+real, not staying hypothetical. OpenCode's dispatch in this same case study
+used a plain `pytest -q` check (not the combined command), which re-verified
+as genuinely correct — that verdict stands.
 
 ## Honest limits
 
