@@ -16,6 +16,15 @@ These four case studies document software development and reliability work in my
 | [Python-Inspector](03-python-inspector/case-study.md) | Code scanning needs useful findings and controlled test execution. | Desktop inspection tool combining five checks and Docker test execution; latest recorded suite: 105 passed, 1 skipped. |
 | [Evidence-durability repair](04-evidence-durability/case-study.md) | Routine reinstalls removed verification records. | Evidence storage was relocated and checked with per-file hashes across a real reinstall. |
 
+## Additional work
+
+The same validate-before-trust pattern applied to workflow-automation platforms (n8n) instead of standalone scripts. Both repos include a `test-results.md` documenting real runs, not just code read-throughs.
+
+| Project | Problem addressed | Documented result |
+|---|---|---|
+| [inquiry-triage](https://github.com/hunter-terry/inquiry-triage) | A local model can be talked into saying things it shouldn't (e.g. quoting a price) before a human reviews a draft reply. | A deliberate pricing prompt-injection got the model to comply; the validation layer caught it and flagged it before it reached a reviewer. |
+| [lead-qualifier](https://github.com/hunter-terry/lead-qualifier) | A model's own confidence score isn't a safe routing signal on its own. | A prompt-injection attempt inflated a lead's score and was caught by a deterministic check; a follow-up security review then found and closed a gap in that same check using two natural-language attacks with no literal keywords. |
+
 ## My contribution
 
 I define the goals and acceptance criteria, choose the tasks and tools, make permission and scope decisions, and review reported outcomes before accepting work.
