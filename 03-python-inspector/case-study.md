@@ -1,7 +1,9 @@
 # Case Study 3: Python-Inspector — Built, Hardened, and Validated Software
 **Roles:** Hunter directed scope, acceptance criteria, and approval decisions. Implementation and technical checks were performed through Claude Code and the agent/tool workflow described below; they are not attributed to Hunter as personally executed commands or code review.
 
-**Evidence:** This account summarizes recorded project work. The underlying code and raw execution records are not included in this public repository. Results below were not rerun for the September 9, 2026 documentation update.
+**Source:** [github.com/hunter-terry/python-inspector](https://github.com/hunter-terry/python-inspector) — full code, commit history, and `docs/DETECTION_VALIDATION.md`.
+
+**Evidence:** This account summarizes recorded project work. Raw findings and file paths from the three private local projects used for detection-quality validation (see below) are kept private, not published — only the aggregate results are cited here and in the linked repo's docs. Results below were not rerun for the September 9, 2026 documentation update.
 
 ## Problem
 
@@ -122,24 +124,25 @@ One previously-reported "rough edge" — a folder-picker crash — could not be
 reproduced across 9 live attempts, and is recorded as "does not currently
 reproduce," not proven structurally fixed. The CVE catch and the false-positive
 rate above are one-sample observations against three real projects, not a
-statistical claim about the tool's overall accuracy. The project has no GitHub
-remote yet — a deliberate choice to stay local until it's ready for public
-posting, not an oversight.
+statistical claim about the tool's overall accuracy.
 
-## Verification method (requires the underlying local project)
+## Verification method
 
 From the project root, with its virtual environment active:
-`pytest -q -rs` runs the full suite. The three real-world validation targets are
-external projects not included in this package; the method and per-project
-results table are in the project's own `docs/DETECTION_VALIDATION.md`.
+`pytest -q -rs` runs the full suite. The three real-world validation targets
+were external projects private to Hunter and are not published; the method
+and aggregate per-run results are in the public repo's own
+`docs/DETECTION_VALIDATION.md`.
 
-## Evidence references (local or private unless linked)
+## Evidence references
 
-- Commits: the repaint fix; the detection-quality validation commit and its
-  6 evidence report files; the secrets false-positive fix (`bbbf504`); the
-  Poetry/Pipenv dependency-coverage fix (`cae1816`) and its independent
-  review's follow-up correctness fix (`b6e2ad8`)
-- Internal mission records: Docker/GUI verification; detection-quality
+- Repo: [github.com/hunter-terry/python-inspector](https://github.com/hunter-terry/python-inspector)
+- Commits: the repaint fix; the detection-quality validation pass; the
+  [secrets false-positive fix](https://github.com/hunter-terry/python-inspector/commit/6a7b0c1);
+  the [Poetry/Pipenv dependency-coverage fix](https://github.com/hunter-terry/python-inspector/commit/2f21eeb)
+  and its [independent review's follow-up correctness fix](https://github.com/hunter-terry/python-inspector/commit/3dc4985)
+- Internal mission records (private): Docker/GUI verification; detection-quality
   validation; secrets false-positive fix; Poetry/Pipenv coverage fix and its
   independent second-look review
-- `docs/DETECTION_VALIDATION.md` and the `evidence/` folder in the Python-Inspector repo
+- `docs/DETECTION_VALIDATION.md` in the linked repo; the underlying `evidence/`
+  files for the three private validation projects are kept local, not published
