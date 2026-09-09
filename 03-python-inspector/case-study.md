@@ -3,7 +3,7 @@
 
 **Source:** [github.com/hunter-terry/python-inspector](https://github.com/hunter-terry/python-inspector) — full code, commit history, and `docs/DETECTION_VALIDATION.md`.
 
-**Evidence:** This account summarizes recorded project work. Raw findings and file paths from the three private local projects used for detection-quality validation (see below) are kept private, not published — only the aggregate results are cited here and in the linked repo's docs. The pre-September-9 results below (container execution, repaint fix, detection-quality validation, the two earlier fixes) were not rerun for this update; the suite counts in "How it was verified" were re-run fresh on September 9, 2026 and reflect one app bug and one flaky test found and fixed that day (see the linked repo's `docs/DETECTION_VALIDATION.md` for detail).
+**Evidence:** This account summarizes recorded project work. Raw findings and file paths from the three private local projects used for detection-quality validation (see below) are kept private, not published — only the aggregate results are cited here and in the linked repo's docs. The pre-September-9 results below (container execution, repaint fix, detection-quality validation, the two earlier fixes) were not rerun for this update; the suite counts in "How it was verified" were re-run fresh on September 9, 2026 and reflect three changes made that day — a secrets-dedup fix, one app bug, and one flaky test (see the linked repo's `docs/DETECTION_VALIDATION.md` for detail).
 
 ## Problem
 
@@ -52,9 +52,11 @@ click-through investigation versus which could wait.
   directories are now excluded by default (reusing the project's existing
   ignore-list, not a new mechanism), and a base64 hit is now checked against
   whether it actually decodes to valid JSON before being flagged — a filter whose broader effect on missed secrets has not been established by the recorded sample. Re-verified with a
-  second live re-scan of the same class of real project: **25 → 15
-  findings**, with the one deliberate real-secret test fixture in that
-  project still caught correctly.
+  second live re-scan of one of the same three real projects — specifically
+  the one that had contributed 25 of the original 27 findings, making it the
+  richest source to re-check: **25 → 15 findings** on that one project,
+  with the one deliberate real-secret test fixture in it still caught
+  correctly.
 - **Poetry/Pipenv dependency coverage, added and then independently
   corrected.** `pip-audit` originally read only `requirements.txt`-family
   files, so a project declaring dependencies via `pyproject.toml` (Poetry or
