@@ -55,8 +55,9 @@ click-through investigation versus which could wait.
   second live re-scan of one of the same three real projects — specifically
   the one that had contributed 25 of the original 27 findings, making it the
   richest source to re-check: **25 → 15 findings** on that one project,
-  with the one deliberate real-secret test fixture in it still caught
-  correctly.
+  with the one deliberately-planted fake-credential test fixture in it
+  (used to validate a redaction function, not a real exposed secret) still
+  correctly flagged as a possible finding.
 - **Poetry/Pipenv dependency coverage, added and then independently
   corrected.** `pip-audit` originally read only `requirements.txt`-family
   files, so a project declaring dependencies via `pyproject.toml` (Poetry or
@@ -179,7 +180,8 @@ method and aggregate per-run results are in the public repo's own
   the [Poetry/Pipenv dependency-coverage fix](https://github.com/hunter-terry/python-inspector/commit/2f21eeb)
   and its [independent review's follow-up correctness fix](https://github.com/hunter-terry/python-inspector/commit/3dc4985);
   the [secrets-dedup fix](https://github.com/hunter-terry/python-inspector/commit/4079e05);
-  the [approve_and_run() interface fix and repaint-test deflake](https://github.com/hunter-terry/python-inspector/commit/f36a4af)
+  the [approve_and_run() interface fix and repaint-test deflake](https://github.com/hunter-terry/python-inspector/commit/f36a4af);
+  [commit `7335eef`](https://github.com/hunter-terry/python-inspector/commit/7335eef) (no code change — the commit the Docker-gap re-verification numbers were measured against)
 - Internal mission records (private): Docker/GUI verification; detection-quality
   validation; secrets false-positive fix; Poetry/Pipenv coverage fix and its
   independent second-look review
