@@ -97,18 +97,27 @@ click-through investigation versus which could wait.
   independent review's own follow-up correctness fix), 106 (secrets-dedup fix,
   drafted by OpenCode and independently verified by Claude Code), to 107 (one
   more regression test added for a real interface bug found the same day, see
-  below); the 1 skip is confirmed the same pre-existing, unrelated
-  Docker-daemon-unavailable skip throughout.
+  below); the 1 skip at that point was a pre-existing, unrelated
+  Docker-daemon-unavailable skip (closed later the same day — see below).
 - Same commit, the combined suite (`pytest tests evidence\verify_ui.py -q -rs`,
   which adds `evidence/verify_ui.py` — the GUI regression file `pyproject.toml`
   excludes from the bare command above): **120 passed, 1 skipped, 1 failed, in
-  238.33s**. The 1 skip and the 1 failure are the same root cause reported by
+  238.33s**. The 1 skip and the 1 failure were the same root cause reported by
   two different tests — Docker Desktop's daemon could not be started in this
-  environment during this pass — not a code regression; no other failures were
+  environment during that pass — not a code regression; no other failures were
   observed. This supersedes an earlier claim that the GUI suite had multiple
   Docker-related failures: re-verification on 2026-09-09 found that claim was
   wrong about the cause for at least two of them (see below), which were a real
   app bug and a flaky test, not Docker.
+- **Docker gap closed, same day, commit `7335eef`**: once Docker Desktop was
+  restarted and confirmed reachable (`docker info`), the bare suite went to
+  **108 passed, 0 skipped, 186.14s** and the combined suite to **122 passed, 0
+  skipped, 0 failed, 247.00s**. The two tests previously blocked by Docker's
+  unavailability —
+  `test_live_isolated_run_executes_pytest_with_network_disabled` (previously
+  skipped) and `test_real_scan_large_report_clipboard_and_docker_output`
+  (previously failed) — were independently re-run by name and both confirmed
+  passing (`2 passed in 128.64s`). No environment gap remains in either suite.
 - **One real app bug and one flaky test, both found and fixed during that same
   re-verification pass** (by Claude Code, independent of any AI-fleet
   dispatch): (1) `approve_and_run()`
