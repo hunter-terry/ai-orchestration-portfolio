@@ -163,9 +163,12 @@ statistical claim about the tool's overall accuracy.
 ## Verification method
 
 From the project root, with its virtual environment active:
-`pytest -q -rs` runs the full suite. The three real-world validation targets
-were external projects private to Hunter and are not published; the method
-and aggregate per-run results are in the public repo's own
+`pytest -q` runs the full suite (add `-rs` to also show the reason for any
+skip). The combined suite — which additionally runs the separate GUI
+regression file, `evidence/verify_ui.py` — is
+`pytest tests evidence\verify_ui.py -q -rs`. The three real-world validation
+targets were external projects private to Hunter and are not published; the
+method and aggregate per-run results are in the public repo's own
 `docs/DETECTION_VALIDATION.md`.
 
 ## Evidence references
