@@ -5,6 +5,8 @@
 
 **Evidence:** This account summarizes recorded project work. Raw findings and file paths from the three private local projects used for detection-quality validation (see below) are kept private, not published — only the aggregate results are cited here and in the linked repo's docs. The pre-September-9 results below (container execution, repaint fix, detection-quality validation, the two earlier fixes) were not rerun for this update; the suite counts in "How it was verified" were re-run fresh on September 9, 2026 and reflect three changes made that day — a secrets-dedup fix, one app bug, and one flaky test (see the linked repo's `docs/DETECTION_VALIDATION.md` for detail).
 
+**Recorded outcome:** public source and tests for a desktop inspection tool, with documented live container/GUI checks and real-project detection investigations. The latest recorded September 9, 2026 run reports 108 ordinary-suite passes and 122 combined-suite passes; these are historical results, not a new run.
+
 ## Problem
 
 Python-Inspector is a desktop tool that scans a local folder or a GitHub
@@ -13,6 +15,16 @@ plus a first-party repo-config checker) and can run a project's own test suite
 inside a hardened, disposable Docker container. Two questions matter for a tool
 like this: does the sandbox actually hold under real load, and can its findings
 actually be trusted against real code — not just its own test fixtures?
+
+## Decisions I made
+
+| Decision | Why I chose it | AI execution under that direction |
+| --- | --- | --- |
+| Evaluate real sandbox behavior and finding quality, beyond whether the app launches. | A scanning tool must produce useful findings and control test execution in actual use. | Run container, cancellation, GUI, and detection-quality investigations. |
+| Select a real GitHub project and three unrelated local projects as validation targets. | Fixtures alone would not answer how the tool behaves against real projects. | Execute scans and tests; check flagged source lines and report aggregate results. |
+| Prioritize which reported GUI rough edges warranted live investigation. | Some reported rough edges warranted a live click-through investigation; others could wait. | Reproduce selected symptoms, implement fixes, and record unreproduced or unresolved behavior. |
+
+Implementation, source-level diagnosis, and technical verification were AI-executed; my role was setting the scope and acceptance criteria.
 
 ## What I directed and decided
 

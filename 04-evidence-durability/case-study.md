@@ -3,6 +3,8 @@
 
 **Evidence:** This account summarizes recorded project work. The underlying code and raw execution records are not included in this public repository. Results below were not rerun for the September 9, 2026 documentation update.
 
+**Recorded outcome:** existing evidence was migrated with matching per-file hashes, and a canary record survived a real reinstall unchanged. This addresses evidence loss during reinstall, not same-user tamper resistance.
+
 ## Problem
 
 The verification controller from Case Study 1 is only as trustworthy as its own
@@ -10,6 +12,14 @@ evidence trail. Its default evidence folder turned out to live *inside* the exac
 directory tree that the skill installer deletes and recreates on every reinstall
 — so the proof that past repairs were actually verified was being silently
 destroyed by routine maintenance on the very tool that relies on it.
+
+## Decisions I made
+
+| Options reviewed | My choice and reasoning | AI execution under that direction |
+| --- | --- | --- |
+| Change the installer's reinstall behavior, or relocate the controller's evidence root. | Relocate the evidence root. The installer's clean delete-and-recreate behavior was already correct; evidence belonged outside the directory it replaces. | Diagnose the paths, change the evidence default, migrate existing records, and verify byte preservation and survival across reinstall. |
+
+My contribution was selecting between the two fixes. Script diagnosis, migration commands, and hash checks were performed through the AI/tool workflow.
 
 ## What I directed and decided
 

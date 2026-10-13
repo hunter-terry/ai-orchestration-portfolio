@@ -11,9 +11,9 @@ These four case studies document software development and reliability work in my
 
 | Project | Problem addressed | Documented result |
 |---|---|---|
-| [Verification system](01-verification-system/case-study.md) | Agents can claim success without valid checks. | A deterministic controller checks submissions against a frozen contract; 17 adversarial tests passed in the recorded run. |
-| [AI-worker supervision](02-fleet-supervision/case-study.md) | Delegated agents can change unrelated files or report environment-specific failures. | Review caught an unauthorized test rewrite; separate execution distinguished sandbox failures from project failures. |
 | [Python-Inspector](03-python-inspector/case-study.md) — [public source](https://github.com/hunter-terry/python-inspector) | Code scanning needs useful findings and controlled test execution. | Desktop inspection tool combining five checks and Docker test execution; latest recorded suite (2026-09-09, commit `7335eef`): 108 passed, 0 skipped; combined suite (adds the separate GUI regression file): 122 passed, 0 skipped, 0 failed. |
+| [Verification system](01-verification-system/case-study.md) | Agents can claim success without valid checks. | A local controller checks submissions against a frozen contract; 17 adversarial scenarios passed in the recorded run. A later exit-code defect invalidated one dispatch verdict and is documented in Cases 1 and 2. |
+| [AI-worker supervision](02-fleet-supervision/case-study.md) | Delegated agents can change unrelated files or report environment-specific failures. | Review caught an unauthorized test rewrite; separate execution distinguished sandbox failures from project failures. |
 | [Evidence-durability repair](04-evidence-durability/case-study.md) | Routine reinstalls removed verification records. | Evidence storage was relocated and checked with per-file hashes across a real reinstall. |
 
 ## Additional work
@@ -27,7 +27,7 @@ The same validate-before-trust pattern applied to workflow-automation platforms 
 
 ## My contribution
 
-I define the goals and acceptance criteria, choose the tasks and tools, make permission and scope decisions, and review reported outcomes before accepting work.
+I define the goals and acceptance criteria, choose the tasks and tools, make permission and scope decisions, and review reported outcomes before accepting work. Each case study includes a decision table connecting my documented choices to their rationale and the AI-executed work that followed.
 
 Claude Code and delegated OpenCode/Codex agents performed implementation and technical checking. The case studies distinguish my direction from agent execution. Separate review sessions and deterministic checks are part of the workflow; they are not claims of an external audit or of code I personally wrote.
 
@@ -66,7 +66,7 @@ test suite are public** at
 Test results are historical records; each one states the date and commit it
 was measured against rather than being assumed current.
 
-Each case study includes the problem, my role, the implementation, verification results, and limitations.
+Each case study includes the problem, my decisions, AI execution, verification results, and limitations.
 
 ## Tools used
 

@@ -3,12 +3,24 @@
 
 **Evidence:** This account summarizes recorded project work. The underlying code and raw execution records are not included in this public repository. The original dispatch narrative below was not rerun for the September 9, 2026 documentation update; the correction to the Codex verdict further down *is* the result of a genuine re-verification pass done that day.
 
+**Recorded outcome:** AI review caught and reverted an out-of-scope test rewrite, and later re-verification corrected a false-success verdict. This is evidence of a review workflow catching problems, not proof that its original checker was infallible.
+
 ## Problem
 
 Delegating real engineering work to a coding agent (OpenCode running a free-tier
 model; Codex) is only as safe as the review standing between "the agent said it's
 done" and "I believe it's done." Two real dispatches tested whether the standard
 from Case Study 1 actually catches problems, or just looks good on paper.
+
+## Decisions I made
+
+| Decision | Why it mattered | AI execution under that direction |
+| --- | --- | --- |
+| Dispatch a cleanup repair and a separate documentation task with defined scope. | Each worker needed a concrete assignment against which its changes could be judged. | Implement the repair or documentation, then inspect diffs and run verification. |
+| Choose the tools used for those assignments. | The trial exercised the delegation standard against real coding-agent output. | Execute the assignments through OpenCode and Codex. |
+| Resolve the blocked OpenCode invocation by adding one specific permission myself. | Permission changes remained my decision rather than an AI workaround around its own gate. | Continue only after that permission decision. |
+
+The unrelated test rewrite, inadequate regression test, and false-success verdict were identified through AI/tool review and re-verification. I do not attribute those technical discoveries to myself.
 
 ## What I directed and decided
 
@@ -51,8 +63,9 @@ transient-lock failures before asserting recovery.
   happened to match, but was not assumed to in advance).
 - Codex's change scope was confirmed by comparing the actual file diff against
   the one file it was authorized to touch; the verification controller from
-  Case Study 1 independently returned "succeeded on the first attempt" for both
-  dispatches.
+  Case Study 1 originally returned "succeeded on the first attempt" for both
+  dispatches. Later re-verification upheld OpenCode's verdict but invalidated
+  Codex's verdict because of the controller exit-code defect described below.
 - The follow-up's new test was checked by first reproducing the *original* bug
   mechanism directly, with a disposable script, before writing anything — then
   confirming the new test actually fails without the fix and passes with it.

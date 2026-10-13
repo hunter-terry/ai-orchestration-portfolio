@@ -3,6 +3,8 @@
 
 **Evidence:** This account summarizes recorded project work. The underlying code and raw execution records are not included in this public repository. Results below were not rerun for the September 9, 2026 documentation update.
 
+**Recorded outcome:** a local verification controller and delegation standard, with 17 adversarial scenarios passing on September 8, 2026. A later exit-code defect invalidated one original dispatch verdict; the correction and its limits are explained below.
+
 ## Problem
 
 Once AI agents (Claude Code itself, and non-Claude coding agents like OpenCode and
@@ -11,6 +13,16 @@ AI can't code — it's that its own claim of success can't be trusted by default
 agent, or a tool it invokes, can report "tests pass" or "done" while the tests
 didn't actually run, ran against stale code, or were quietly weakened to pass.
 This is true even for Claude Code's own work, not just a third-party tool's.
+
+## Decisions I made
+
+| Decision | Why I chose it | AI execution under that direction |
+| --- | --- | --- |
+| Require evidence before recording an AI repair as done. | An agent's success report may not match what actually ran. | Build the controller and written verification standard; run technical checks. |
+| Use a small deterministic local controller rather than another model as the deciding mechanism. | Judge submissions against explicit scope and check results instead of another AI's opinion. | Implement contract freezing, submission checks, attempt limits, and evidence records. |
+| Keep the trust claim bounded. | Same-user tampering and manual bookkeeping are not solved by this controller. | Document the threat model and limitations. |
+
+These are direction and acceptance decisions, not claims that I personally wrote the controller or ran its test commands.
 
 ## What I directed and decided
 
@@ -25,9 +37,10 @@ parallel written standard for delegating to tools outside Claude Code entirely.
 - **A verification controller**: freezes a contract (target, allowed write scope,
   protected paths, exact check commands, expected exit codes) *before* any repair
   edit is made, then judges each candidate submission against that frozen
-  contract — capped at 3 submissions per mission. It recomputes every check
-  itself; it never reads a "tests passed" claim from the repair and takes it at
-  face value.
+  contract — capped at 3 submissions per mission. It is intended to run and judge checks itself rather than accept a
+  repair agent's "tests passed" claim. A later-discovered exit-code defect
+  meant this was not reliably enforced for bare external commands in the
+  original version; see the correction below.
 - **A fleet job-sheet standard**: the same principle extended to OpenCode and
   Codex, two coding agents with no access to that controller. A mandatory
   hand-off (exact scope, allowed files, done-criteria) plus a cheap mechanical
@@ -73,8 +86,23 @@ just happy-path checks:
 - a resumed mission continues at the correct attempt number, not duplicated
 - the evidence index is created and correctly records the mission's outcome
 
-It has also been exercised for real, twice, against actual OpenCode/Codex output
-— see Case Study 2.
+### Later correction — September 9, 2026
+
+The original controller treated bare external-command checks such as `pytest -q`
+as passed regardless of the actual exit code. This defect invalidated the
+original success verdict for the Codex combined-suite dispatch. The existing
+17 passing scenarios therefore did not establish correct exit-code handling
+for that command shape.
+
+[Case Study 2](../02-fleet-supervision/case-study.md#update-2026-09-09--correction-to-the-codex-verdict-above)
+records the investigation and reports that the controller defect was fixed on
+September 9. The public repository does not include the controller source or
+raw repair evidence; this revision does not report a fresh controller test run.
+
+The controller was used against actual OpenCode/Codex output twice. OpenCode's
+outcome held up under re-verification; Codex's original success verdict did not.
+See Case Study 2 for the distinction between correct task output and an invalid
+verification verdict.
 
 ![The verify-repair.ps1 controller freezing and judging a disposable demonstration mission — real output, not a mockup.](screenshots/verify-repair-console.png)
 
@@ -108,5 +136,6 @@ runs the full adversarial suite against disposable `%TEMP%` fixtures — recorde
 - `references/verify-repair-controller.md`, `references/fleet-job-sheet.md`,
   `references/work-inbox-maintenance-contract.md` (same repo)
 - Fresh run, 2026-09-08: 17 passed, 0 failed
-- Two real production uses of the controller referenced in Case Study 2, both
-  `SUCCEEDED on attempt 1/3`
+- Two real controller uses referenced in Case Study 2; both originally logged
+  `SUCCEEDED on attempt 1/3`, but only OpenCode's original verdict held up under
+  later re-verification. Codex's verdict is explicitly corrected there.
