@@ -7,7 +7,7 @@ I direct AI coding agents to build software and require evidence before acceptin
 
 ## Selected work
 
-These five case studies document software development and reliability work in my own environment.
+These six case studies document software development and reliability work in my own environment.
 
 | Project | Problem addressed | Documented result |
 |---|---|---|
@@ -16,6 +16,7 @@ These five case studies document software development and reliability work in my
 | [AI-worker supervision](02-fleet-supervision/case-study.md) | Delegated agents can change unrelated files or report environment-specific failures. | Review caught an unauthorized test rewrite; separate execution distinguished sandbox failures from project failures. |
 | [Evidence-durability repair](04-evidence-durability/case-study.md) | Routine reinstalls removed verification records. | Evidence storage was relocated and checked with per-file hashes across a real reinstall. |
 | [Tactical accessories](08-tactical-accessories/case-study.md) | Stream-ready 3D character accessories must not break the working character underneath. | Charcoal tactical helmet + tinted goggles with strap, approved and live on stream; 33/33 integration checks passed, 67/67 archive files hash-verified. |
+| [Woozy VTuber character](09-woozy-character/case-study.md) | A stylized slime VTuber needs live facial features without losing its silhouette or movement. | Webcam-driven character with timed slime deformation, accepted Oct 11 on a 70-file hash-verified payload; streaming live. |
 
 ## Additional work
 
