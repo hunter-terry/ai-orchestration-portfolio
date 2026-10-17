@@ -43,6 +43,12 @@ Claude Code and delegated OpenCode/Codex agents performed implementation and tec
 
 ![Python-Inspector results screen](03-python-inspector/screenshots/results-screen.png)
 
+**Woozy VTuber character** — version 1 to version 2: flat matte sticker to glossy volumetric slime.
+
+![Woozy version 1](09-woozy-character/screenshots/v1.jpg)
+
+![Woozy version 2](09-woozy-character/screenshots/v2.jpg)
+
 ## Validation and evidence
 
 Controller suite recorded on **September 8, 2026**; Python-Inspector suite

@@ -4,6 +4,14 @@
 
 **Evidence:** This account summarizes the review package `Woozy-Muse-Portfolio-Handoff-2026-10-17` (21 files, integrity-verified by Archer on receipt — all matched) and the v1-vs-v2 demo video Hunter supplied on 2026-10-17. Recorded verification results below are from the October builds, not re-run for this write-up, except where noted.
 
+**Version 1 → Version 2** (frames captured from Hunter's v1-vs-v2 comparison video, 2026-10-17):
+
+![Woozy version 1 — flat matte green slime](screenshots/v1.jpg)
+*Version 1: flat matte shading, face pasted on.*
+
+![Woozy version 2 — glossy volumetric slime](screenshots/v2.jpg)
+*Version 2: glossy specular response, integrated features, rounded form.*
+
 **Recorded outcome:** a live webcam-driven slime VTuber character — glossy green body, live eyes and mouth, integrated goo brows, timed slime-flow deformation with exact recovery — accepted by Hunter on October 11, 2026 and streaming live with four independently selectable looks.
 
 ## Problem
@@ -32,7 +40,7 @@ I set the character contract — glossy green slime, rounded head, live webcam e
 - **Live observations recorded:** the four look controls, helmet and goggles following head tilt, OBS rendering the combined look with controls excluded, and saved scene readback retaining state.
 - **Fitted accessories, measured:** the goggles and strap were fitted against the deforming body across 25 sampled morph combinations and 975 contact samples, with approximately 0.55 cm minimum sampled strap clearance.
 - **Package integrity re-verified by Archer on 2026-10-17:** all 21 top-level review-package files matched; every nested archive CRC passed.
-- **The demo video** (Hunter-supplied, 2026-10-17) shows the v1-to-v2 evolution directly.
+- **Side-by-side screenshots** (frames from Hunter's v1-vs-v2 comparison video, 2026-10-17) show the evolution directly: flat matte v1 to glossy volumetric v2.
 
 ## Honest limits
 
@@ -46,4 +54,4 @@ I set the character contract — glossy green slime, rounded head, live webcam e
 
 - Review package: `Woozy-Muse-Portfolio-Handoff-2026-10-17` (Hunter's files; brief, evidence map, baseline readings, original project files)
 - Accepted character: `Woozy-Character-Accepted-2026-10-11.zip` (frozen source authority)
-- Demo video: `demo/v1-vs-v2.mp4` (Hunter-supplied 2026-10-17; H.264 transcode of his original for browser playback)
+- Screenshots: `screenshots/v1.jpg` and `screenshots/v2.jpg` (frames captured from Hunter's v1-vs-v2 comparison video, 2026-10-17)
