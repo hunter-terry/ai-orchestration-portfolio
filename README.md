@@ -7,7 +7,7 @@ I direct AI coding agents to build software and require evidence before acceptin
 
 ## Selected work
 
-These four case studies document software development and reliability work in my own environment.
+These five case studies document software development and reliability work in my own environment.
 
 | Project | Problem addressed | Documented result |
 |---|---|---|
@@ -15,6 +15,7 @@ These four case studies document software development and reliability work in my
 | [Verification system](01-verification-system/case-study.md) | Agents can claim success without valid checks. | A local controller checks submissions against a frozen contract; 17 adversarial scenarios passed in the recorded run. A later exit-code defect invalidated one dispatch verdict and is documented in Cases 1 and 2. |
 | [AI-worker supervision](02-fleet-supervision/case-study.md) | Delegated agents can change unrelated files or report environment-specific failures. | Review caught an unauthorized test rewrite; separate execution distinguished sandbox failures from project failures. |
 | [Evidence-durability repair](04-evidence-durability/case-study.md) | Routine reinstalls removed verification records. | Evidence storage was relocated and checked with per-file hashes across a real reinstall. |
+| [Tactical accessories](08-tactical-accessories/case-study.md) | Stream-ready 3D character accessories must not break the working character underneath. | Charcoal tactical helmet + tinted goggles with strap, approved and live on stream; 33/33 integration checks passed, 67/67 archive files hash-verified. |
 
 ## Additional work
 

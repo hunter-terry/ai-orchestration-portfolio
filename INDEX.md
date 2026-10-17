@@ -6,4 +6,5 @@
 - [AI-worker supervision](02-fleet-supervision/case-study.md)
 - [Python-Inspector](03-python-inspector/case-study.md)
 - [Evidence-durability repair](04-evidence-durability/case-study.md)
+- [Tactical accessories](08-tactical-accessories/case-study.md)
 - [Additional work](README.md#additional-work): [inquiry-triage](https://github.com/hunter-terry/inquiry-triage), [lead-qualifier](https://github.com/hunter-terry/lead-qualifier)
